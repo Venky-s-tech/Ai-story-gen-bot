@@ -1,0 +1,243 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800"
+    />
+
+    <title>Galileo Design</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-[#FFFFFF] group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#EEEEEE] px-10 py-3">
+          <div class="flex items-center gap-4 text-black">
+            <div class="size-4">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6H42L36 24L42 42H6L12 24L6 6Z" fill="currentColor"></path></svg>
+            </div>
+            <h2 class="text-black text-lg font-bold leading-tight tracking-[-0.015em]">AI Story</h2>
+          </div>
+          <div class="flex flex-1 justify-end gap-8">
+            <label class="flex flex-col min-w-40 !h-10 max-w-64">
+              <div class="flex w-full flex-1 items-stretch rounded-xl h-full">
+                <div
+                  class="text-[#6B6B6B] flex border-none bg-[#EEEEEE] items-center justify-center pl-4 rounded-l-xl border-r-0"
+                  data-icon="MagnifyingGlass"
+                  data-size="24px"
+                  data-weight="regular"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                      d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"
+                    ></path>
+                  </svg>
+                </div>
+                <input
+                  placeholder="Search"
+                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-black focus:outline-0 focus:ring-0 border-none bg-[#EEEEEE] focus:border-none h-full placeholder:text-[#6B6B6B] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
+                  value=""
+                />
+              </div>
+            </label>
+            <button
+              class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 bg-[#EEEEEE] text-black gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5"
+            >
+              <div class="text-black" data-icon="List" data-size="20px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"
+                  ></path>
+                </svg>
+              </div>
+            </button>
+          </div>
+        </header>
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="@container">
+              <div class="@[480px]:px-4 @[480px]:py-3">
+                <div
+                  class="bg-cover bg-center flex flex-col justify-end overflow-hidden bg-[#FFFFFF] @[480px]:rounded-xl min-h-[218px]"
+                  style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 25%), url("https://cdn.usegalileo.ai/sdxl10/80d2fb7c-9789-4522-a619-516649f7b957.png");'
+                >
+                  <div class="flex p-4"><p class="text-white tracking-light text-[28px] font-bold leading-tight">Love Between Man &amp; Wolf</p></div>
+                </div>
+              </div>
+            </div>
+            <p class="text-black text-base font-normal leading-normal pb-3 pt-1 px-4">A captivating tale of love and survival in a mythical forest.</p>
+            <div class="flex justify-stretch">
+              <div class="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-between">
+                <button
+                  a href="http://localhost:8501/"
+                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-black text-[#FFFFFF] text-sm font-bold leading-normal tracking-[0.015em]"
+                >
+                  <span class="truncate">Generate Story</span>
+                </a>
+                </button>
+                <button
+                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#EEEEEE] text-black text-sm font-bold leading-normal tracking-[0.015em]"
+                >
+                  <span class="truncate">Discover More</span>
+                </button>
+              </div>
+            </div>
+            <h2 class="text-black text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Hot New</h2>
+            <div class="p-4">
+              <div class="flex items-stretch justify-between gap-4 rounded-xl bg-[#FFFFFF] p-4 shadow-[0_0_4px_rgba(0,0,0,0.1)]">
+                <div class="flex flex-col gap-1 flex-[2_2_0px]">
+                  <p class="text-black text-base font-bold leading-tight">Star-Crossed: A Fateful Encounter</p>
+                  <p class="text-[#6B6B6B] text-sm font-normal leading-normal">A tale of love defying cosmic odds.</p>
+                </div>
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1"
+                  style='background-image: url("https://cdn.usegalileo.ai/sdxl10/b3d10c8b-3ee6-4889-b233-9f77da3cd5dc.png");'
+                ></div>
+              </div>
+            </div>
+            <h2 class="text-black text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Romance</h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-xl"
+                  style='background-image: url("https://cdn.usegalileo.ai/replicate/6b0498b3-108b-49b4-9fd7-83a476591465.png");'
+                ></div>
+                <p class="text-black text-base font-medium leading-normal">The Divine</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-xl"
+                  style='background-image: url("https://cdn.usegalileo.ai/replicate/a6c50a2c-967e-4a86-a506-d2bcac5cc9b4.png");'
+                ></div>
+                <p class="text-black text-base font-medium leading-normal">Holding It All</p>
+              </div>
+            </div>
+            <h2 class="text-black text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Adventure</h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-xl"
+                  style='background-image: url("https://cdn.usegalileo.ai/replicate/8b5215b9-303d-44f5-9e31-06ebb59eedee.png");'
+                ></div>
+                <p class="text-black text-base font-medium leading-normal">The Climb</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-xl"
+                  style='background-image: url("https://cdn.usegalileo.ai/sdxl10/f6cce651-c387-41be-baf2-c9bc5590dfbf.png");'
+                ></div>
+                <p class="text-black text-base font-medium leading-normal">Jungle Trek</p>
+              </div>
+            </div>
+            <h2 class="text-black text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Horror</h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-xl"
+                  style='background-image: url("https://cdn.usegalileo.ai/sdxl10/a16f2ab4-4bca-4524-9901-5d750029b06a.png");'
+                ></div>
+                <p class="text-black text-base font-medium leading-normal">The Haunted House</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-xl"
+                  style='background-image: url("https://cdn.usegalileo.ai/sdxl10/211d4d9d-28ff-4217-b5ba-66b7bdc70d0b.png");'
+                ></div>
+                <p class="text-black text-base font-medium leading-normal">The Terrifying Basement Night</p>
+              </div>
+            </div>
+            <h2 class="text-black text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Science</h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-xl"
+                  style='background-image: url("https://cdn.usegalileo.ai/sdxl10/f27b9a73-6983-4a54-9866-c74dd9f8e8fe.png");'
+                ></div>
+                <p class="text-black text-base font-medium leading-normal">Journey to the Future</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-xl"
+                  style='background-image: url("https://cdn.usegalileo.ai/sdxl10/271a64b5-9f85-4ae1-900e-228a5804f029.png");'
+                ></div>
+                <p class="text-black text-base font-medium leading-normal">The AI Experiment</p>
+              </div>
+            </div>
+            <h2 class="text-black text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Historical</h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-xl"
+                  style='background-image: url("https://cdn.usegalileo.ai/sdxl10/93d9c948-cd9c-4132-b718-e59808ce76e3.png");'
+                ></div>
+                <p class="text-black text-base font-medium leading-normal">World War II</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-xl"
+                  style='background-image: url("https://cdn.usegalileo.ai/sdxl10/780842ad-1abd-4895-83ea-bb1fc96f0ffb.png");'
+                ></div>
+                <p class="text-black text-base font-medium leading-normal">The French Revolution</p>
+              </div>
+            </div>
+            <h2 class="text-black text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Detective</h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-xl"
+                  style='background-image: url("https://cdn.usegalileo.ai/sdxl10/31dd95b3-b250-4781-8866-fe434003c6c5.png");'
+                ></div>
+                <p class="text-black text-base font-medium leading-normal">The Unsolved Crime of the Decade</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-xl"
+                  style='background-image: url("https://cdn.usegalileo.ai/sdxl10/619154b8-73c5-4064-9178-b219d6988f5b.png");'
+                ></div>
+                <p class="text-black text-base font-medium leading-normal">The Pursuit of the Masked Culprit</p>
+              </div>
+            </div>
+            <h2 class="text-black text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Comedy</h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-xl"
+                  style='background-image: url("https://cdn.usegalileo.ai/sdxl10/487cd6e8-a7ac-4d58-b9fa-ab058ed68f1d.png");'
+                ></div>
+                <p class="text-black text-base font-medium leading-normal">The Hilarious Chronicles</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-xl"
+                  style='background-image: url("https://cdn.usegalileo.ai/sdxl10/ac7305db-c99a-4c9a-83a0-22e9ad280b30.png");'
+                ></div>
+                <p class="text-black text-base font-medium leading-normal">The Side-Splitting Sitcom</p>
+              </div>
+            </div>
+          </div>
+          <div class="layout-content-container flex flex-col">
+            <div class="flex justify-end overflow-hidden px-5 pb-5">
+              <button
+                class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-5 bg-black text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] min-w-0 gap-4 pl-4 pr-6"
+              >
+                <div class="text-[#FFFFFF]" data-icon="House" data-size="24px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                      d="M218.83,103.77l-80-75.48a1.14,1.14,0,0,1-.11-.11,16,16,0,0,0-21.53,0l-.11.11L37.17,103.77A16,16,0,0,0,32,115.55V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V160h32v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V115.55A16,16,0,0,0,218.83,103.77ZM208,208H160V160a16,16,0,0,0-16-16H112a16,16,0,0,0-16,16v48H48V115.55l.11-.1L128,40l79.9,75.43.11.1Z"
+                    ></path>
+                  </svg>
+                </div>
+                <span class="truncate">Home</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

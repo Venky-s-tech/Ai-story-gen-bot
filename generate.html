@@ -1,0 +1,202 @@
+<!-- templates/generate.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Generator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="min-h-screen bg-black text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold">Story Generator</h1>
+            
+            <!-- Theme Selection -->
+            <div class="mt-8 bg-gray-900 rounded-lg p-6">
+                <h2 class="text-xl mb-4">Select Theme</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    {% for theme, emoji in themes %}
+                    <label class="flex items-center space-x-2">
+                        <input type="radio" name="theme" value="{{ theme }}"
+                               class="form-radio" {% if loop.first %}checked{% endif %}>
+                        <span>{{ theme }} {{ emoji }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Input Type Selection -->
+            <div class="mt-8 bg-gray-900 rounded-lg p-6">
+                <h2 class="text-xl mb-4">Choose Input Type</h2>
+                <div class="flex space-x-4">
+                    <button onclick="setInputType('text')" 
+                            id="textBtn"
+                            class="px-4 py-2 bg-white text-black rounded-md">
+                        Text Input 📝
+                    </button>
+                    <button onclick="setInputType('image')" 
+                            id="imageBtn"
+                            class="px-4 py-2 bg-gray-800 text-white rounded-md">
+                        Image Input 📷
+                    </button>
+                </div>
+            </div>
+
+            <!-- Text Input Section -->
+            <div id="textInput" class="mt-8 bg-gray-900 rounded-lg p-6">
+                <textarea id="storyPrompt"
+                          class="w-full h-32 p-4 bg-gray-800 rounded-md"
+                          placeholder="Enter your story prompt here..."></textarea>
+            </div>
+
+            <!-- Image Input Section -->
+            <div id="imageInput" class="mt-8 bg-gray-900 rounded-lg p-6 hidden">
+                <input type="file" 
+                       id="imageUpload" 
+                       accept="image/*"
+                       class="hidden">
+                <label for="imageUpload"
+                       class="block w-full p-4 text-center bg-gray-800 rounded-md cursor-pointer">
+                    Upload Image
+                </label>
+                <img id="previewImage" class="mt-4 max-h-48 mx-auto hidden">
+            </div>
+
+            <!-- Generate Button -->
+            <button onclick="generateStory()"
+                    class="mt-8 w-full bg-white text-black py-3 rounded-md font-bold">
+                Generate Story
+            </button>
+
+            <!-- Story Output -->
+            <div id="storyOutput" class="mt-8 bg-gray-900 rounded-lg p-6 hidden">
+                <h2 class="text-xl mb-4">Generated Story</h2>
+                <div id="storyText" class="whitespace-pre-line bg-gray-800 p-4 rounded-md"></div>
+                
+                <!-- Audio Player -->
+                <div id="audioPlayer" class="mt-4 hidden">
+                    <audio controls class="w-full">
+                        <source id="audioSource" type="audio/mpeg">
+                    </audio>
+                </div>
+
+                <!-- Download Buttons -->
+                <div class="mt-4 flex space-x-4">
+                    <button onclick="downloadStory()"
+                            class="px-4 py-2 bg-gray-800 rounded-md">
+                        Download Story ⬇️
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentInputType = 'text';
+
+        function setInputType(type) {
+            currentInputType = type;
+            const textInput = document.getElementById('textInput');
+            const imageInput = document.getElementById('imageInput');
+            const textBtn = document.getElementById('textBtn');
+            const imageBtn = document.getElementById('imageBtn');
+
+            if (type === 'text') {
+                textInput.classList.remove('hidden');
+                imageInput.classList.add('hidden');
+                textBtn.classList.add('bg-white', 'text-black');
+                textBtn.classList.remove('bg-gray-800', 'text-white');
+                imageBtn.classList.remove('bg-white', 'text-black');
+                imageBtn.classList.add('bg-gray-800', 'text-white');
+            } else {
+                textInput.classList.add('hidden');
+                imageInput.classList.remove('hidden');
+                imageBtn.classList.add('bg-white', 'text-black');
+                imageBtn.classList.remove('bg-gray-800', 'text-white');
+                textBtn.classList.remove('bg-white', 'text-black');
+                textBtn.classList.add('bg-gray-800', 'text-white');
+            }
+        }
+
+        // Handle image upload
+        document.getElementById('imageUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('previewImage');
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        async function generateStory() {
+            const selectedTheme = document.querySelector('input[name="theme"]:checked').value;
+            const data = {
+                inputType: currentInputType,
+                selectedTheme: selectedTheme
+            };
+
+            if (currentInputType === 'text') {
+                data.inputText = document.getElementById('storyPrompt').value;
+            } else {
+                const preview = document.getElementById('previewImage');
+                if (preview.src) {
+                    data.uploadedImage = preview.src;
+                } else {
+                    alert('Please upload an image first');
+                    return;
+                }
+            }
+
+            try {
+                const response = await fetch('/generate-story', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                
+                if (result.error) {
+                    alert(result.error);
+                    return;
+                }
+
+                // Display story
+                document.getElementById('storyText').textContent = result.story;
+                document.getElementById('storyOutput').classList.remove('hidden');
+
+                // Handle audio
+                if (result.audioUrl) {
+                    const audioPlayer = document.getElementById('audioPlayer');
+                    document.getElementById('audioSource').src = result.audioUrl;
+                    audioPlayer.classList.remove('hidden');
+                }
+            } catch (error) {
+                alert('Error generating story');
+                console.error(error);
+            }
+        }
+
+        async function downloadStory() {
+            const story = document.getElementById('storyText').textContent;
+            const blob = new Blob([story], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'generated_story.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

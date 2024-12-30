@@ -1,0 +1,325 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Story Generator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+<body class="min-h-screen bg-black text-white">
+    <!-- Header -->
+    <div class="fixed top-0 w-full z-40 bg-gradient-to-b from-black/80 to-transparent">
+        <div class="flex items-center justify-between p-4">
+            <h1 class="text-2xl font-bold">AI Story</h1>
+            <div class="flex items-center space-x-4">
+                <button class="p-2">Search</button>
+                <button class="p-2">Profile</button>
+            </div>
+        </div>
+        <div class="px-4 pb-4">
+            <button class="bg-white text-black px-6 py-2 rounded-md font-semibold" onclick="window.location.href='http://localhost:8501/'">
+                Generate Story
+            </button>
+        </div>
+    </div>
+
+    <!-- Story Generator Modal -->
+    <div id="generatorModal" class="fixed inset-0 bg-black/80 items-center justify-center z-50 p-4 overflow-y-auto hidden">
+        <div class="bg-gray-900 rounded-lg p-6 max-w-2xl w-full relative mx-auto mt-20">
+            <button class="absolute top-4 right-4" onclick="hideGenerator()">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+
+            <h2 class="text-xl font-bold mb-6">Create Your Story</h2>
+
+            <!-- Input Type Selection -->
+            <div class="flex space-x-4 mb-6">
+                <button id="textInputBtn" class="flex items-center px-4 py-2 rounded-md bg-white text-black" onclick="setInputType('text')">
+                    <span class="mr-2">📝</span> Text
+                </button>
+                <button id="imageInputBtn" class="flex items-center px-4 py-2 rounded-md bg-gray-800" onclick="setInputType('image')">
+                    <span class="mr-2">📷</span> Image
+                </button>
+            </div>
+
+            <!-- Theme Selection -->
+            <select id="themeSelect" class="w-full p-3 mb-4 bg-gray-800 rounded-md">
+                {% for theme in theme_prompts %}
+                <option value="{{ theme }}">{{ theme }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Input Areas -->
+            <div id="textInput">
+                <textarea
+                    id="storyPrompt"
+                    class="w-full p-4 mb-4 bg-gray-800 rounded-md h-32"
+                    placeholder="Enter your story prompt..."
+                >As the rain poured down on a quiet, dimly lit street, I found myself standing in front of a quaint bookstore</textarea>
+            </div>
+
+            <div id="imageInput" class="mb-4 hidden">
+                <input
+                    type="file"
+                    accept="image/jpeg,image/png"
+                    class="hidden"
+                    id="image-upload"
+                    onchange="handleImageUpload(event)"
+                />
+                <label
+                    for="image-upload"
+                    class="block w-full p-4 bg-gray-800 rounded-md text-center cursor-pointer hover:bg-gray-700"
+                >
+                    Upload Image
+                </label>
+                <img id="uploadedImage" class="mt-4 max-h-48 mx-auto rounded-md hidden" />
+            </div>
+
+            <div id="errorMessage" class="mb-4 p-3 bg-red-900/50 border border-red-500 rounded-md text-red-200 hidden"></div>
+
+            <button class="bg-white text-black px-6 py-2 rounded-md font-semibold" onclick="window.location.href='http://localhost:8501/'">
+                Generate Story
+            </button></button>
+
+            <!-- Generated Story Display -->
+            <div id="generatedContent" class="mt-6 hidden">
+                <h3 class="text-lg font-semibold mb-2">Your Story:</h3>
+                <div id="storyText" class="bg-gray-800 p-4 rounded-md whitespace-pre-line mb-4"></div>
+                
+                <div class="flex flex-wrap gap-4">
+                    <button
+                        onclick="downloadStory()"
+                        class="flex items-center px-4 py-2 bg-gray-800 rounded-md hover:bg-gray-700"
+                    >
+                        <span class="mr-2">⬇️</span> Download Story
+                    </button>
+                    
+                    <button
+                        id="playAudioBtn"
+                        class="flex items-center px-4 py-2 bg-gray-800 rounded-md hover:bg-gray-700 hidden"
+                    >
+                        <span class="mr-2">🔊</span> Play Audio
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pt-32 pb-16">
+        <!-- Featured Story -->
+        <div class="relative h-[70vh] mb-8">
+            <div class="absolute inset-0">
+                <img 
+                    src="/static/placeholder.jpg"
+                    alt="Featured Story"
+                    class="w-full h-full object-cover"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+            </div>
+            <div class="absolute bottom-0 left-0 p-8">
+                
+            </div>
+        </div>
+
+        <!-- Categories -->
+        {% for category_name, stories in categories.items() %}
+        <div class="mb-8">
+            <div class="px-8 mb-4 flex items-center justify-between">
+                <h3 class="text-xl font-semibold">{{ category_name }}</h3>
+                <button class="text-sm flex items-center opacity-80 hover:opacity-100">
+                    All <span class="ml-1">→</span>
+                </button>
+            </div>
+            <div class="relative">
+                <div class="flex space-x-4 overflow-x-auto px-8 pb-4 hide-scrollbar">
+                    {% for story in stories %}
+                    <div class="flex-none w-[200px] group cursor-pointer">
+                        <div class="relative aspect-[2/3] rounded-md overflow-hidden mb-2">
+                            <img 
+                                src="{{ story.image }}"
+                                alt="{{ story.title }}"
+                                class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-200"
+                            />
+                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                                <button 
+                                    class="bg-white/90 text-black px-4 py-2 rounded-md text-sm font-medium"
+                                    onclick="generateFromTitle('{{ story.title }}')"
+                                >
+                                    Generate
+                                </button>
+                            </div>
+                        </div>
+                        <h4 class="text-sm font-medium">{{ story.title }}</h4>
+                        <div class="text-xs text-gray-400">Rating: {{ story.rating }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 w-full bg-black/90 border-t border-gray-800">
+        <div class="flex justify-around py-4">
+            <button class="text-sm opacity-80 hover:opacity-100">Home</button>
+            <button class="text-sm opacity-80 hover:opacity-100">My Stories</button>
+            <button class="text-sm opacity-80 hover:opacity-100">Profile</button>
+        </div>
+    </nav>
+
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+
+    <script>
+        let currentInputType = 'text';
+        let generatedStory = '';
+        let isGenerating = false;
+
+        function showGenerator() {
+            document.getElementById('generatorModal').classList.remove('hidden');
+            document.getElementById('generatorModal').classList.add('flex');
+        }
+
+        function hideGenerator() {
+            document.getElementById('generatorModal').classList.add('hidden');
+            document.getElementById('generatorModal').classList.remove('flex');
+        }
+
+        function setInputType(type) {
+            currentInputType = type;
+            
+            // Update UI
+            if (type === 'text') {
+                document.getElementById('textInput').classList.remove('hidden');
+                document.getElementById('imageInput').classList.add('hidden');
+                document.getElementById('textInputBtn').classList.add('bg-white', 'text-black');
+                document.getElementById('textInputBtn').classList.remove('bg-gray-800');
+                document.getElementById('imageInputBtn').classList.remove('bg-white', 'text-black');
+                // Continuing the script tag from the previous template...
+
+                document.getElementById('imageInputBtn').classList.add('bg-gray-800');
+            } else {
+                document.getElementById('textInput').classList.add('hidden');
+                document.getElementById('imageInput').classList.remove('hidden');
+                document.getElementById('imageInputBtn').classList.add('bg-white', 'text-black');
+                document.getElementById('imageInputBtn').classList.remove('bg-gray-800');
+                document.getElementById('textInputBtn').classList.remove('bg-white', 'text-black');
+                document.getElementById('textInputBtn').classList.add('bg-gray-800');
+            }
+        }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+                    showError('Please upload a JPG or PNG image');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const img = document.getElementById('uploadedImage');
+                    img.src = reader.result;
+                    img.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+            setTimeout(() => {
+                errorDiv.classList.add('hidden');
+            }, 5000);
+        }
+
+        async function generateStory() {
+            if (isGenerating) return;
+            
+            const generateBtn = document.getElementById('generateBtn');
+            const originalBtnText = generateBtn.innerHTML;
+            isGenerating = true;
+
+            try {
+                generateBtn.innerHTML = '<span class="flex items-center justify-center"><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Generating...</span>';
+
+                const requestData = {
+                    inputType: currentInputType,
+                    selectedTheme: document.getElementById('themeSelect').value
+                };
+
+                if (currentInputType === 'text') {
+                    requestData.inputText = document.getElementById('storyPrompt').value;
+                } else {
+                    const uploadedImage = document.getElementById('uploadedImage');
+                    if (!uploadedImage.src) {
+                        throw new Error('Please upload an image first');
+                    }
+                    requestData.uploadedImage = uploadedImage.src;
+                }
+
+                const response = await axios.post('/generate-story', requestData);
+                generatedStory = response.data.story;
+
+                // Update UI with generated content
+                document.getElementById('storyText').textContent = generatedStory;
+                document.getElementById('generatedContent').classList.remove('hidden');
+
+                // Show audio button if audio URL is provided
+                if (response.data.audioUrl) {
+                    document.getElementById('playAudioBtn').classList.remove('hidden');
+                }
+
+            } catch (error) {
+                showError(error.response?.data?.error || error.message || 'Error generating story');
+            } finally {
+                isGenerating = false;
+                generateBtn.innerHTML = originalBtnText;
+            }
+        }
+
+        async function downloadStory() {
+            if (!generatedStory) return;
+
+            try {
+                const response = await axios.post('/download-story', 
+                    { story: generatedStory },
+                    { responseType: 'blob' }
+                );
+
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'generated_story.txt');
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                window.URL.revokeObjectURL(url);
+
+            } catch (error) {
+                showError('Error downloading story');
+            }
+        }
+
+        function generateFromTitle(title) {
+            document.getElementById('storyPrompt').value = title;
+            showGenerator();
+        }
+    </script>
+</body>
+</html>
